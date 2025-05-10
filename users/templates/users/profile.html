@@ -1,0 +1,114 @@
+<!-- users/templates/users/profile.html -->
+{% extends "users/base.html" %}
+{% block title %}Mon profil | Beenaya OPC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Mon profil</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        {% if user.photo_profil %}
+                            <img src="{{ user.photo_profil.url }}" alt="Photo de profil" class="img-fluid rounded-circle mb-3" style="max-width: 180px; height: auto;">
+                        {% else %}
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 180px; height: 180px;">
+                                <i class="bi bi-person" style="font-size: 5rem;"></i>
+                            </div>
+                        {% endif %}
+                        <h5>{{ user.get_full_name|default:user.username }}</h5>
+                        <p class="text-muted">{{ user.get_role_display }}</p>
+                        <p><a href="{% url 'users:password_change' %}" class="btn btn-outline-primary btn-sm">Changer de mot de passe</a></p>
+                    </div>
+                    <div class="col-md-8">
+                        <form method="post" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="id_first_name" class="form-label">Prénom</label>
+                                <input type="text" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                                       id="id_first_name" value="{{ form.first_name.value }}">
+                                {% if form.first_name.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.first_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_last_name" class="form-label">Nom</label>
+                                <input type="text" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                                       id="id_last_name" value="{{ form.last_name.value }}">
+                                {% if form.last_name.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.last_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                       id="id_email" value="{{ form.email.value }}">
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.email.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_telephone" class="form-label">Téléphone</label>
+                                <input type="tel" name="telephone" class="form-control {% if form.telephone.errors %}is-invalid{% endif %}"
+                                       id="id_telephone" value="{{ form.telephone.value }}">
+                                {% if form.telephone.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.telephone.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_entreprise" class="form-label">Entreprise</label>
+                                <input type="text" name="entreprise" class="form-control {% if form.entreprise.errors %}is-invalid{% endif %}"
+                                       id="id_entreprise" value="{{ form.entreprise.value }}">
+                                {% if form.entreprise.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.entreprise.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_photo_profil" class="form-label">Photo de profil</label>
+                                <input type="file" name="photo_profil" class="form-control {% if form.photo_profil.errors %}is-invalid{% endif %}"
+                                       id="id_photo_profil">
+                                {% if form.photo_profil.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.photo_profil.errors.0 }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    Format recommandé : JPG ou PNG, carré, moins de 2Mo
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Mettre à jour le profil</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-muted">
+                    <small>Dernière connexion : {{ user.date_derniere_connexion|date:"d/m/Y à H:i" }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

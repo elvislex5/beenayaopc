@@ -1,0 +1,59 @@
+<!-- users/templates/users/login.html -->
+{% extends "users/base.html" %}
+{% block title %}Connexion | Beenaya OPC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Connexion</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" name="username" class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                               id="id_username" required autofocus>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Mot de passe</label>
+                        <input type="password" name="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+                               id="id_password" required>
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Se connecter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <p>Vous n'avez pas de compte ? <a href="{% url 'users:register' %}">S'inscrire</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
