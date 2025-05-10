@@ -38,7 +38,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker compose exec -T app python manage.py test
+          docker compose exec -T web python manage.py test
 
       - name: Stop Docker containers
         run: |
